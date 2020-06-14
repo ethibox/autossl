@@ -1,0 +1,60 @@
+{
+  "name": "autossl",
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Start",
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "/",
+        "options": {}
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        450,
+        450
+      ]
+    },
+    {
+      "parameters": {
+        "sink": "autossl"
+      },
+      "name": "AMQP Sender",
+      "type": "n8n-nodes-base.amqp",
+      "typeVersion": 1,
+      "position": [
+        600,
+        450
+      ],
+      "credentials": {
+        "amqp": "rabbitmq"
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AMQP Sender",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {},
+  "id": "5ee671434b7a4e0006f216c9"
+}
