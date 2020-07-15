@@ -21,11 +21,13 @@ import autoSsl from './autossl';
     await ch.consume(queue, async (msg) => {
         const data = msg.content.toString();
         const { json } = JSON.parse(data.substr(8));
-        const { rootDomain, domain: newDomain } = json.body;
-        console.log({ rootDomain, newDomain });
+        const { rootDomain, domain } = json.body;
+        console.log({ rootDomain, domain });
 
-        if (rootDomain && newDomain) {
-            await autoSsl(rootDomain, newDomain);
+        if (rootDomain && domain) {
+            await autoSsl(rootDomain, domain).catch(({ message }) => {
+                console.error(`Error: ${message}`);
+            });
         }
 
         ch.ack(msg);
